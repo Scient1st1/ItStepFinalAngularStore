@@ -1,0 +1,42 @@
+<dialog
+  #dialog
+  class="modal"
+  aria-labelledby="rating-title"
+  (close)="closed.emit()"
+  (click)="onBackdropClick($event)"
+>
+  <form class="modal-body" [formGroup]="form" (ngSubmit)="submit()" novalidate>
+    <div>
+      <div class="eyebrow">{{ existing() ? 'Change your rating' : 'Rate this piece' }}</div>
+      <h2 id="rating-title">{{ productName() || 'This piece' }}</h2>
+    </div>
+
+    <fieldset class="star-input">
+      <legend>Rating</legend>
+      @for (value of starValues; track value) {
+        <label [class.on]="value <= rate()">
+          <input class="visually-hidden" type="radio" formControlName="rate" [value]="value" />
+          <span aria-hidden="true">★</span>
+          <span class="visually-hidden">{{ value }} {{ value === 1 ? 'star' : 'stars' }}</span>
+        </label>
+      }
+    </fieldset>
+
+    <label
+      >First name<input class="field" formControlName="firstName" readonly autocomplete="off"
+    /></label>
+    <label
+      >Last name<input class="field" formControlName="lastName" readonly autocomplete="off"
+    /></label>
+    <p class="muted modal-note">Your review is published under the name on your account.</p>
+
+    <div class="status" role="status" [class.error]="status().error">{{ status().text }}</div>
+
+    <div class="form-actions">
+      <button class="button" type="submit" [disabled]="busy()">OK</button>
+      <button class="button ghost" type="button" [disabled]="busy()" (click)="close()">
+        Cancel
+      </button>
+    </div>
+  </form>
+</dialog>

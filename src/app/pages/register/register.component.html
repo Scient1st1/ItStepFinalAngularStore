@@ -1,0 +1,68 @@
+<div class="auth-layout">
+  <div class="auth-card">
+    <div class="eyebrow">A little more glow</div>
+    <h1>Make yourself at home.</h1>
+    <p class="muted" style="font-size: 13px; line-height: 1.6">
+      Create an account to keep your basket close.
+    </p>
+    <form id="register-form" [formGroup]="form" (ngSubmit)="submit()" novalidate>
+      <label
+        >First name<input
+          class="field"
+          formControlName="firstName"
+          autocomplete="given-name"
+          maxlength="50"
+          [attr.aria-invalid]="
+            form.controls.firstName.touched && form.controls.firstName.invalid
+          " />
+        <app-field-error [control]="form.controls.firstName" label="First name"
+      /></label>
+      <label
+        >Last name<input
+          class="field"
+          formControlName="lastName"
+          autocomplete="family-name"
+          maxlength="50"
+          [attr.aria-invalid]="form.controls.lastName.touched && form.controls.lastName.invalid" />
+        <app-field-error [control]="form.controls.lastName" label="Last name"
+      /></label>
+      <label
+        >Email<input
+          class="field"
+          formControlName="email"
+          type="email"
+          autocomplete="email"
+          [attr.aria-invalid]="form.controls.email.touched && form.controls.email.invalid" />
+        <app-field-error [control]="form.controls.email" label="Email"
+      /></label>
+      <label
+        >Password<input
+          class="field"
+          formControlName="password"
+          type="password"
+          autocomplete="new-password"
+          [attr.aria-invalid]="form.controls.password.touched && form.controls.password.invalid" />
+        <app-field-error [control]="form.controls.password" label="Password"
+      /></label>
+      <label
+        >Confirm password<input
+          class="field"
+          formControlName="confirmPassword"
+          type="password"
+          autocomplete="new-password"
+          [attr.aria-invalid]="
+            form.controls.confirmPassword.touched && form.controls.confirmPassword.invalid
+          " />
+        <app-field-error [control]="form.controls.confirmPassword" label="Password confirmation"
+      /></label>
+      <button class="button" type="submit" [disabled]="busy()">Create account</button>
+      <div class="status" id="register-status" role="status" [class.error]="status().error">
+        {{ status().text }}
+      </div>
+    </form>
+    <p class="auth-foot">
+      Already have an account?
+      <a routerLink="/login" [queryParams]="{ returnUrl: returnParam() }">Sign in</a>
+    </p>
+  </div>
+</div>

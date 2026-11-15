@@ -1,0 +1,9 @@
+<span class="rating">
+  <span class="stars" role="img" [attr.aria-label]="label()"
+    ><span class="stars-fill" [style.width.%]="percent()" aria-hidden="true">★★★★★</span
+    ><span aria-hidden="true">★★★★★</span></span
+  >
+  @if (showValue()) {
+    <span>{{ text() }}</span>
+  }
+</span>

@@ -1,0 +1,34 @@
+<header class="topbar">
+  <a class="logo" routerLink="/">NOCTURNE<span>.</span></a>
+  <nav class="nav">
+    <a
+      routerLink="/"
+      routerLinkActive
+      ariaCurrentWhenActive="page"
+      [routerLinkActiveOptions]="{ exact: true }"
+      >Home</a
+    ><a routerLink="/catalog" routerLinkActive ariaCurrentWhenActive="page">Shop all</a
+    ><a routerLink="/cart" routerLinkActive ariaCurrentWhenActive="page"
+      >Cart <span id="cart-count">{{ cartCount() }}</span></a
+    >
+  </nav>
+  <div class="nav-right">
+    <span id="user-label">{{ userLabel() }}</span>
+    @if (auth.isLoggedIn()) {
+      <a id="account-link" href="#" (click)="signOut($event)">Sign out</a>
+    } @else {
+      <a id="account-link" routerLink="/login" routerLinkActive ariaCurrentWhenActive="page"
+        >Sign in</a
+      >
+    }
+    <button
+      class="lamp-toggle"
+      id="lantern-toggle"
+      type="button"
+      [attr.aria-pressed]="lantern.hidden()"
+      (click)="lantern.toggleHidden()"
+    >
+      {{ lantern.hidden() ? 'Show lantern' : 'Hide lantern' }}
+    </button>
+  </div>
+</header>

@@ -1,0 +1,3 @@
+# Nocturne Goods
+
+A lantern themed shop demo with Home, Shop all, Cart, Sign in, and Register pages. It uses plain JavaScript, Supabase Auth, Postgres, and Storage. The lantern is a shared fixed-length top-hung animation and starts unlit, with the page dark. Pull the lower bead or press Space to toggle the warm page light. Drag the lantern body left or right with the mouse to swing it; release to let it continue from that angle. Its light setting, hidden/visible status, and swing angle/speed are kept while you move between pages in the same tab; a fresh tab starts dark, visible, and at the default swing. Use the Hide lantern button beside Sign in to drop the lantern out of view; hiding it leaves the current page lighting unchanged. Select Show lantern to bring it back.

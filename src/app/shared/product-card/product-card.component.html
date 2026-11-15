@@ -1,0 +1,38 @@
+@let p = product();
+<article class="product-card">
+  @if (image()) {
+    <img
+      class="product-image"
+      [src]="image()"
+      [alt]="p.name ?? 'Product photo'"
+      loading="lazy"
+      (error)="imageFailed.set(true)"
+    />
+  } @else {
+    <div class="product-placeholder" aria-label="No product image">✦</div>
+  }
+  <div class="product-info">
+    <div class="product-cat">
+      {{ p.category?.name || 'Goods' }}
+      @if (p.stock < 1) {
+        <span class="muted" style="font-size: 10px"> · Out of stock</span>
+      }
+    </div>
+    <h3>
+      <a [routerLink]="['/product', p.id]">{{ p.name }}</a>
+    </h3>
+    <p>{{ subtitle() }}</p>
+    <app-stars [rating]="p.rating" />
+    <div class="product-bottom">
+      <span class="price">{{ p.price | money }}</span>
+      <button
+        class="button small"
+        type="button"
+        [disabled]="p.stock < 1 || busy()"
+        (click)="add.emit(p)"
+      >
+        Add to basket
+      </button>
+    </div>
+  </div>
+</article>

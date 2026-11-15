@@ -1,0 +1,44 @@
+<div class="auth-layout">
+  <div class="auth-card">
+    <div class="eyebrow">One last step</div>
+    <h1>Check your email.</h1>
+    <p class="muted" style="font-size: 13px; line-height: 1.6">
+      Enter the 6-digit code we sent to confirm your address.
+    </p>
+    @if (notice(); as text) {
+      <div class="notice" id="auth-message" role="status">{{ text }}</div>
+    }
+    <form id="verify-form" [formGroup]="form" (ngSubmit)="submit()" novalidate>
+      <label
+        >Email<input
+          class="field"
+          formControlName="email"
+          type="email"
+          autocomplete="email"
+          [attr.aria-invalid]="form.controls.email.touched && form.controls.email.invalid" />
+        <app-field-error [control]="form.controls.email" label="Email"
+      /></label>
+      <label
+        >Verification code<input
+          class="field"
+          formControlName="code"
+          inputmode="numeric"
+          autocomplete="one-time-code"
+          maxlength="6"
+          [attr.aria-invalid]="form.controls.code.touched && form.controls.code.invalid" />
+        <app-field-error [control]="form.controls.code" label="The code"
+      /></label>
+      <button class="button" type="submit" [disabled]="busy()">Verify email</button>
+      <button class="button ghost" type="button" [disabled]="busy()" (click)="resend()">
+        Send the code again
+      </button>
+      <div class="status" id="verify-status" role="status" [class.error]="status().error">
+        {{ status().text }}
+      </div>
+    </form>
+    <p class="auth-foot">
+      Already verified?
+      <a routerLink="/login" [queryParams]="{ returnUrl: returnParam() }">Sign in</a>
+    </p>
+  </div>
+</div>

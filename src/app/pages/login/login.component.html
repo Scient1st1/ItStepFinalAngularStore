@@ -1,0 +1,40 @@
+<div class="auth-layout">
+  <div class="auth-card">
+    <div class="eyebrow">Welcome back</div>
+    <h1>Come on in.</h1>
+    <p class="muted" style="font-size: 13px; line-height: 1.6">
+      Sign in to pick up where you left off.
+    </p>
+    @if (notice(); as text) {
+      <div class="notice" id="auth-message" role="status">{{ text }}</div>
+    }
+    <form id="login-form" [formGroup]="form" (ngSubmit)="submit()" novalidate>
+      <label
+        >Email<input
+          class="field"
+          formControlName="email"
+          type="email"
+          autocomplete="email"
+          [attr.aria-invalid]="form.controls.email.touched && form.controls.email.invalid" />
+        <app-field-error [control]="form.controls.email" label="Email"
+      /></label>
+      <label
+        >Password<input
+          class="field"
+          formControlName="password"
+          type="password"
+          autocomplete="current-password"
+          [attr.aria-invalid]="form.controls.password.touched && form.controls.password.invalid" />
+        <app-field-error [control]="form.controls.password" label="Password"
+      /></label>
+      <button class="button" type="submit" [disabled]="busy()">Sign in</button>
+      <div class="status" id="login-status" role="status" [class.error]="status().error">
+        {{ status().text }}
+      </div>
+    </form>
+    <p class="auth-foot">
+      New to Nocturne?
+      <a routerLink="/register" [queryParams]="{ returnUrl: returnParam() }">Create an account</a>
+    </p>
+  </div>
+</div>

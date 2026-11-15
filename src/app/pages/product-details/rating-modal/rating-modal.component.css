@@ -1,0 +1,66 @@
+/* In the top layer, above the lantern's dark wash, so it dims itself with --lit. */
+.modal {
+  width: min(430px, calc(100vw - 32px));
+  padding: 0;
+  border: 1px solid rgba(232, 185, 103, 0.4);
+  background: #19241e;
+  color: var(--cream);
+  filter: brightness(calc(0.45 + 0.55 * var(--lit)));
+}
+.modal::backdrop {
+  background: rgba(1, 4, 4, 0.66);
+}
+.modal-body {
+  display: grid;
+  gap: 15px;
+  padding: 28px;
+}
+.modal-body h2 {
+  font-size: 26px;
+  margin: 8px 0 0;
+}
+.modal-body label {
+  display: grid;
+  gap: 7px;
+  color: var(--muted);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+}
+.modal-body .field[readonly] {
+  color: var(--muted);
+  cursor: default;
+}
+.modal-note {
+  font-size: 11px;
+  margin: 0;
+}
+.star-input {
+  display: flex;
+  gap: 4px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+.star-input legend {
+  padding: 0;
+  margin-bottom: 7px;
+  color: var(--muted);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+}
+.star-input label {
+  display: block;
+  color: rgba(243, 234, 214, 0.22);
+  font-size: 34px;
+  line-height: 1;
+  cursor: pointer;
+  transition: color 0.15s;
+}
+.star-input label.on,
+.star-input label:hover {
+  color: var(--gold);
+}
+.star-input label:focus-within {
+  outline: 2px solid var(--gold);
+  outline-offset: 3px;
+}

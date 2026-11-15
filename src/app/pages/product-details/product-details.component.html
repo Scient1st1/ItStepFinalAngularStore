@@ -1,0 +1,184 @@
+@if (loading()) {
+  <div class="empty">Loading this piece…</div>
+} @else if (error(); as message) {
+  <div class="empty">
+    {{ message }}<br />
+    <span class="detail-actions" style="justify-content: center; margin-top: 18px">
+      @if (canRetry()) {
+        <button class="button ghost small" type="button" (click)="retry()">Try again</button>
+      }
+      <a class="button ghost small" routerLink="/catalog">Back to the collection</a>
+    </span>
+  </div>
+} @else if (product(); as p) {
+  <p class="crumbs muted"><a routerLink="/catalog">Shop all</a> / {{ p.category?.name }}</p>
+
+  <section class="detail">
+    <div class="detail-media">
+      @if (image()) {
+        <img
+          class="detail-image"
+          [src]="image()"
+          [alt]="p.name ?? 'Product photo'"
+          (error)="onImageError()"
+        />
+      } @else {
+        <div class="product-placeholder detail-image" aria-label="No product image">✦</div>
+      }
+      @if (gallery().length > 1) {
+        <div class="detail-thumbs">
+          @for (url of gallery(); track url) {
+            <button
+              class="thumb"
+              type="button"
+              [class.active]="url === image()"
+              [attr.aria-label]="'Show photo ' + ($index + 1)"
+              (click)="selectedImage.set(url)"
+            >
+              <img [src]="url" alt="" loading="lazy" />
+            </button>
+          }
+        </div>
+      }
+    </div>
+
+    <div class="detail-info">
+      <div class="eyebrow">{{ p.category?.name || 'Goods' }}</div>
+      <h1 class="detail-title">{{ p.name }}</h1>
+      <app-stars [rating]="p.rating" />
+      <div class="detail-price price">{{ p.price | money }}</div>
+
+      <dl class="detail-facts">
+        <div>
+          <dt>Release date</dt>
+          <dd>
+            @if (releaseDate() === undefined) {
+              Loading…
+            } @else if (releaseDate(); as date) {
+              {{ date | date: 'mediumDate' }}
+            } @else {
+              Not available
+            }
+          </dd>
+        </div>
+        <div>
+          <dt>Brand</dt>
+          <dd>{{ p.brand || '—' }}</dd>
+        </div>
+        <div>
+          <dt>Model</dt>
+          <dd>{{ p.model || '—' }}</dd>
+        </div>
+        <div>
+          <dt>Stock</dt>
+          <dd>{{ p.stock > 0 ? p.stock + ' left' : 'Out of stock' }}</dd>
+        </div>
+      </dl>
+
+      <div class="detail-actions">
+        <button class="button" type="button" [disabled]="p.stock < 1 || adding()" (click)="add()">
+          Add to basket
+        </button>
+        <button class="button ghost" type="button" (click)="openRating()">
+          {{ ownReview() ? 'Change your rating' : 'Rate this piece' }}
+        </button>
+      </div>
+      <p class="status" role="status" [class.error]="status().error">{{ status().text }}</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="tabs" role="tablist" aria-label="Product information">
+      <button
+        class="tab"
+        id="tab-details"
+        type="button"
+        role="tab"
+        aria-controls="panel-details"
+        [attr.aria-selected]="tab() === 'details'"
+        (click)="tab.set('details')"
+      >
+        Details
+      </button>
+      <button
+        class="tab"
+        id="tab-review"
+        type="button"
+        role="tab"
+        aria-controls="panel-review"
+        [attr.aria-selected]="tab() === 'review'"
+        (click)="tab.set('review')"
+      >
+        Review
+      </button>
+    </div>
+
+    @if (tab() === 'details') {
+      <div class="cart-box" id="panel-details" role="tabpanel" aria-labelledby="tab-details">
+        @if (p.description) {
+          <p class="lede detail-description">{{ p.description }}</p>
+        }
+        @if (specifications().length) {
+          <table class="spec-table">
+            <tbody>
+              @for (spec of specifications(); track spec[0]) {
+                <tr>
+                  <th scope="row">{{ spec[0] }}</th>
+                  <td>{{ spec[1] }}</td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        }
+        @if (!p.description && !specifications().length) {
+          <div class="empty">No further details for this piece yet.</div>
+        }
+      </div>
+    } @else {
+      <div class="cart-box" id="panel-review" role="tabpanel" aria-labelledby="tab-review">
+        @if (reviewsLoading()) {
+          <div class="empty">Loading reviews…</div>
+        } @else if (reviewsError(); as message) {
+          <div class="empty">
+            {{ message }}<br />
+            <button
+              class="button ghost small"
+              style="margin-top: 18px"
+              type="button"
+              (click)="loadReviews()"
+            >
+              Try again
+            </button>
+          </div>
+        } @else {
+          @for (review of reviews(); track review.id) {
+            <article class="review-row">
+              <div>
+                <h3>{{ reviewerName(review) }}</h3>
+                <div class="muted review-date">{{ review.createdAt | date: 'mediumDate' }}</div>
+              </div>
+              <app-stars [rating]="review.rating" />
+            </article>
+          } @empty {
+            <div class="empty">No one has rated this piece yet. Be the first.</div>
+          }
+          @if (reviewsTotal() > reviews().length) {
+            <p class="muted review-date">
+              Showing the latest {{ reviews().length }} of {{ reviewsTotal() }} reviews.
+            </p>
+          }
+        }
+      </div>
+    }
+  </section>
+
+  @if (ratingOpen()) {
+    <app-rating-modal
+      [productId]="p.id"
+      [productName]="p.name"
+      [existing]="ownReview()"
+      (closed)="ratingOpen.set(false)"
+      (saved)="onRated()"
+    />
+  }
+}

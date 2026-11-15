@@ -1,0 +1,24 @@
+:host {
+  display: block;
+}
+
+.filters .price-field {
+  max-width: 130px;
+}
+.notice .button {
+  margin-left: 10px;
+}
+.pager {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 28px;
+  font-size: 12px;
+}
+
+@media (max-width: 650px) {
+  .filters .price-field {
+    flex: 1 1 120px;
+  }
+}

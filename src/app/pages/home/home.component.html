@@ -1,0 +1,55 @@
+<section class="hero">
+  <div class="hero-copy">
+    <div class="eyebrow">Objects for slower evenings</div>
+    <h1>Find your<br /><em>afterglow.</em></h1>
+    <p class="lede">
+      Thoughtful lanterns, warm bulbs and small comforts for the hours when the day finally lets go.
+    </p>
+    <div style="display: flex; gap: 12px; flex-wrap: wrap; margin-top: 27px">
+      <a class="button" routerLink="/catalog">Explore the collection <span>↗</span></a
+      ><a class="button ghost" routerLink="/cart">View your basket</a>
+    </div>
+  </div>
+  <div class="hero-art" aria-hidden="true">
+    <div class="orbit"></div>
+    <div class="orb">
+      N°<br /><small style="font: 10px 'DM Sans'; letter-spacing: 0.22em">LIGHT / HOME</small>
+    </div>
+  </div>
+</section>
+<section>
+  <div class="section-head">
+    <div>
+      <div class="eyebrow">Selected pieces</div>
+      <h2 style="margin-top: 9px">Made for the golden hour</h2>
+    </div>
+    <a class="button ghost small" routerLink="/catalog">View all</a>
+  </div>
+  <p class="status" id="home-status" role="status" [class.error]="status().error">
+    {{ status().text }}
+  </p>
+  <div class="product-grid" data-products="featured">
+    @if (loading()) {
+      <div class="empty" style="grid-column: 1/-1">Loading the collection…</div>
+    } @else if (error(); as message) {
+      <div class="empty" style="grid-column: 1/-1">
+        {{ message }}<br />
+        <button class="button ghost small" style="margin-top: 18px" type="button" (click)="load()">
+          Try again
+        </button>
+      </div>
+    } @else {
+      @for (product of products(); track product.id) {
+        <app-product-card
+          [product]="product"
+          [busy]="addingId() === product.id"
+          (add)="add($event)"
+        />
+      } @empty {
+        <div class="empty" style="grid-column: 1/-1">
+          The collection is being arranged. Check back soon.
+        </div>
+      }
+    }
+  </div>
+</section>

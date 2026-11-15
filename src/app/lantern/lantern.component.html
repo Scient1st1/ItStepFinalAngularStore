@@ -1,0 +1,21 @@
+<div id="lightWash"></div>
+<div id="glow"></div>
+<div id="lantern-scene">
+  <canvas #canvas id="lantern-canvas" aria-hidden="true"></canvas>
+</div>
+<button
+  #handle
+  id="pull-handle"
+  type="button"
+  aria-label="Pull lantern cord to toggle the light"
+  title="Pull to toggle the lantern light"
+></button>
+<button
+  #swing
+  id="lantern-drag-handle"
+  type="button"
+  aria-label="Drag lantern to swing"
+  aria-hidden="true"
+  tabindex="-1"
+></button>
+<div #hint class="hint">Pull the cord for light · drag lantern to swing · Space</div>

@@ -1,0 +1,105 @@
+<div class="eyebrow">Your quiet little corner</div>
+<h1>Your basket</h1>
+<p class="lede">A few good things for the hours ahead.</p>
+<div id="cart-status" class="status" role="status" [class.error]="statusLine().error">
+  {{ statusLine().text }}
+</div>
+<section class="cart-box" id="cart-content" [attr.aria-busy]="cart.loading()">
+  @if (!cart.loaded() && cart.error(); as message) {
+    <div class="empty">
+      {{ message }}<br />
+      <button
+        class="button ghost small"
+        style="margin-top: 18px"
+        type="button"
+        (click)="cart.refresh()"
+      >
+        Try again
+      </button>
+    </div>
+  } @else if (!cart.loaded()) {
+    <div class="empty">Loading your basket…</div>
+  } @else if (!cart.items().length) {
+    <div class="empty">
+      Your basket is waiting for something lovely.<br /><a
+        class="button"
+        style="margin-top: 18px"
+        routerLink="/catalog"
+        >Browse the collection</a
+      >
+    </div>
+  } @else {
+    <div>
+      @for (item of cart.items(); track item.id) {
+        @let p = item.product;
+        <article class="cart-row">
+          @if (imageOf(item); as src) {
+            <img
+              [src]="src"
+              [alt]="p.name ?? 'Product photo'"
+              loading="lazy"
+              (error)="onImageError(item)"
+            />
+          } @else {
+            <div class="product-placeholder" aria-label="No product image">✦</div>
+          }
+          <div>
+            <div class="product-cat">{{ p.category?.name || 'Goods' }}</div>
+            <h3 style="font-size: 19px; margin: 6px 0">
+              <a [routerLink]="['/product', p.id]">{{ p.name }}</a>
+            </h3>
+            <div class="muted" style="font-size: 12px">
+              {{ unitPrice(item) | money }} each · {{ lineTotal(item) | money }}
+            </div>
+            <div class="cart-meta muted">
+              <app-stars [rating]="p.rating" />
+              <span>{{ reviewLabel(p.id) }}</span>
+              <span>{{ p.stock > 0 ? p.stock + ' left in stock' : 'Out of stock' }}</span>
+            </div>
+          </div>
+          <div class="quantity">
+            <button
+              type="button"
+              aria-label="Reduce quantity"
+              [disabled]="isBusy()"
+              (click)="changeQuantity(item, -1)"
+            >
+              −</button
+            ><span>{{ item.quantity }}</span
+            ><button
+              type="button"
+              aria-label="Increase quantity"
+              [disabled]="isBusy() || item.quantity >= p.stock"
+              (click)="changeQuantity(item, 1)"
+            >
+              +
+            </button>
+          </div>
+          <button
+            class="button danger small"
+            type="button"
+            [disabled]="isBusy()"
+            (click)="remove(item)"
+          >
+            Remove
+          </button>
+        </article>
+      }
+    </div>
+    <div class="cart-total">
+      <span>Subtotal</span><span>{{ cart.total() | money }}</span>
+    </div>
+    <div style="display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap">
+      <a class="button ghost" routerLink="/catalog">Continue browsing</a
+      ><button
+        class="button danger"
+        id="clear-cart"
+        type="button"
+        [disabled]="isBusy()"
+        (click)="clear()"
+      >
+        Clear basket
+      </button>
+    </div>
+  }
+</section>
