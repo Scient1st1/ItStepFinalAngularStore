@@ -47,5 +47,10 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./pages/verify-email/verify-email.component').then((m) => m.VerifyEmailComponent),
   },
-  { path: '**', redirectTo: '' },
+  {
+    path: '**',
+    title: 'Not found — Nocturne Goods',
+    loadComponent: () =>
+      import('./pages/not-found/not-found.component').then((m) => m.NotFoundComponent),
+  },
 ];

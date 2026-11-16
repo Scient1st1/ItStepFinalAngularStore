@@ -76,21 +76,6 @@ Endpoints used:
 Note on cart removal: Swagger calls the path parameter `productId`, but the API expects the
 **cart item id** there. A product id is answered with `404 Cart item not found`.
 
-### Where the API has no endpoint or field
-
-| Wanted                                   | What the app does instead                                                                                                                      |
-| ---------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
-| List of brands                           | Built from the products themselves (all pages of `GET /api/products`); filtering uses the real `Brand` parameter                               |
-| First and last name in the rating dialog | `POST /api/reviews` accepts only `productId` and `rate`; the name comes from the account. The dialog shows the signed-in user's name read-only |
-| Text review                              | Not supported by the API, so not offered                                                                                                       |
-| Release date on the details page         | The details response has no date; `createdAt` from the product list is used                                                                    |
-| Review count on a basket card            | `totalCount` of `GET /api/reviews/{productId}?Take=1`, one request per item                                                                    |
-| Clear basket                             | No endpoint; items are removed one after another                                                                                               |
-| Currency                                 | Not in the API; prices are formatted as USD like the original `money()` helper                                                                 |
-| Token refresh                            | No endpoint; an expired session ends in a 401 and a new sign-in                                                                                |
-
-The product create/update/delete endpoints exist but are not used: the old admin form, the
-`shop_admins` check and the image upload were removed.
 
 ## Structure
 
@@ -117,8 +102,3 @@ src/app/
                                   login, register, verify-email
 ```
 
-## legacy/
-
-A copy of the original plain-JavaScript project (HTML pages, `app.js`, `lantern.js`,
-`shop.css`, `config.js`), kept for reference. The originals are still in `tasks/task23`. The
-folder is not part of the build and still contains the old Supabase configuration.
