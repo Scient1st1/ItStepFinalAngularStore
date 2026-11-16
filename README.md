@@ -4,15 +4,6 @@ The lantern-themed shop "Nocturne Goods", migrated from plain JavaScript to Angu
 IT Step course final project. The lantern and the visual theme are the originals; all data and
 accounts come from the IT Step shop API (`https://shopapi.stepacademy.ge`).
 
-## Run
-
-```bash
-npm install
-npm start        # http://localhost:4200
-npm run build    # production build in dist/storeApp
-npm test         # unit tests (Vitest)
-```
-
 Requires Node 20.19+ (built with Angular 22, standalone components, zoneless).
 
 ## What it does
@@ -76,7 +67,6 @@ Endpoints used:
 Note on cart removal: Swagger calls the path parameter `productId`, but the API expects the
 **cart item id** there. A product id is answered with `404 Cart item not found`.
 
-
 ## Structure
 
 Every component was generated with `ng generate component` and is split into
@@ -101,4 +91,3 @@ src/app/
   pages/                          home, catalog, product-details (+ rating-modal), cart,
                                   login, register, verify-email
 ```
-
