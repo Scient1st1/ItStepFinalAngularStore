@@ -81,6 +81,7 @@ export class ProductService {
       map((products) =>
         [...new Set(products.map((p) => p.brand).filter((brand): brand is string => !!brand))].sort(
           (a, b) => a.localeCompare(b),
+          // localeCompare ენის წესებს იცავს და ქართულ ასოებსაც სწორად დაალაგებს
         ),
       ),
     );

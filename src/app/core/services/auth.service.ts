@@ -20,8 +20,10 @@ export type LoginResult = 'signed-in' | 'verification-required';
 
 function decodeExpiry(token: string): number | null {
   try {
+    // create base64 text
     const payload = token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/');
     const exp = JSON.parse(atob(payload)).exp;
+    // get null if expired
     return typeof exp === 'number' ? exp * 1000 : null;
   } catch {
     return null;
